@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIG FUN Disc Jockeys — Your Wedding, Handled.</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #DD00AA;
+    --accent-glow: rgba(221, 0, 170, 0.35);
+    --bg: #0a0a0f;
+    --bg-card: #14141f;
+    --text: #f0eef5;
+    --text-dim: #8a879a;
+    --sidebar-w: 240px;
+    --transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── Slide Counter ── */
+  .slide-counter {
+    position: fixed;
+    top: 24px; right: 32px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dim);
+    z-index: 100;
+    letter-spacing: 1px;
+  }
+
+  /* ── Sidebar Navigation ── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: rgba(10, 10, 15, 0.92);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(221, 0, 170, 0.12);
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 0;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-logo {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 16px;
+  }
+  .sidebar-logo img {
+    width: 120px;
+    opacity: 0.9;
+  }
+
+  .nav-item {
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    letter-spacing: 0.3px;
+  }
+  .nav-item:hover {
+    color: var(--text);
+    background: rgba(221, 0, 170, 0.06);
+  }
+  .nav-item.active {
+    color: var(--accent);
+    font-weight: 600;
+    background: rgba(221, 0, 170, 0.08);
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .nav-number {
+    display: inline-block;
+    width: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.5;
+  }
+
+  /* ── Slide Container ── */
+  .slides-container {
+    margin-left: var(--sidebar-w);
+    width: calc(100vw - var(--sidebar-w));
+    height: 100vh;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity var(--transition), transform var(--transition);
+    pointer-events: none;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 960px;
+    text-align: center;
+  }
+
+  /* ── Typography ── */
+  .headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+  .headline .accent { color: var(--accent); }
+
+  .subhead {
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.5;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .big-number {
+    font-size: 140px;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent), #ff44cc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 32px;
+    line-height: 1.45;
+    color: var(--text);
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .quote::before {
+    content: '"';
+    font-size: 120px;
+    color: var(--accent);
+    opacity: 0.3;
+    position: absolute;
+    top: -50px; left: -40px;
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* ── Visual Components ── */
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    margin-top: 40px;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 44px;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), #ff44cc, var(--accent));
+    opacity: 0.4;
+  }
+  .timeline-item {
+    flex: 1;
+    max-width: 180px;
+    text-align: center;
+    position: relative;
+  }
+  .timeline-icon {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid rgba(221, 0, 170, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 36px;
+    position: relative;
+    z-index: 2;
+  }
+  .timeline-label {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .timeline-sub {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  /* Cards grid */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 36px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    transition: border-color 0.3s ease;
+  }
+  .card:hover { border-color: rgba(221, 0, 170, 0.25); }
+  .card-icon { font-size: 40px; margin-bottom: 16px; }
+  .card-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .card-text { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
+  /* Stat row */
+  .stat-row {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 40px;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 64px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), #ff44cc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    font-weight: 400;
+  }
+
+  /* Feature list (minimal) */
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 32px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 400;
+  }
+  .feature-check {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(221, 0, 170, 0.12);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+
+  /* Price card */
+  .price-cards {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 36px;
+  }
+  .price-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 40px 32px;
+    flex: 1;
+    max-width: 340px;
+    position: relative;
+    overflow: hidden;
+  }
+  .price-card.featured {
+    border-color: var(--accent);
+    box-shadow: 0 0 40px var(--accent-glow);
+  }
+.price-card.featured::before {
+  content: 'MOST POPULAR';
+  position: absolute;
+  top: 22px;
+  right: -70px;
+
+  width: 260px;                 /* long enough to cross the card */
+  padding: 8px 0;
+
+  background: var(--accent);
+  color: #fff;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-align: center;
+
+  transform: rotate(45deg);
+}
+  .price-amount {
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1;
+    margin: 12px 0 8px;
+  }
+  .price-card.featured .price-amount {
+    color: var(--accent);
+  }
+  .price-label-sm {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+  .price-features {
+    text-align: left;
+    font-size: 14px;
+    line-height: 2;
+    color: var(--text-dim);
+  }
+  .price-features .pf-line {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .price-features .pf-check {
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* vs layout */
+  .vs-layout {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  .vs-side {
+    flex: 1;
+    max-width: 300px;
+    padding: 32px;
+    border-radius: 16px;
+    text-align: center;
+  }
+  .vs-side.bad {
+    background: rgba(255, 60, 60, 0.06);
+    border: 1px solid rgba(255, 60, 60, 0.15);
+  }
+  .vs-side.good {
+    background: rgba(221, 0, 170, 0.06);
+    border: 1px solid rgba(221, 0, 170, 0.25);
+  }
+  .vs-divider {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-dim);
+  }
+  .vs-icon { font-size: 48px; margin-bottom: 12px; }
+  .vs-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .vs-items { font-size: 14px; color: var(--text-dim); line-height: 1.8; }
+
+  /* Award badges */
+  .awards {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 40px;
+  }
+  .award {
+    text-align: center;
+  }
+  .award-badge {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    background: rgba(221, 0, 170, 0.06);
+  }
+  .award-number {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .award-of {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .award-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .award-sub {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* Client logos row */
+  .client-row {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 40px;
+    align-items: center;
+  }
+  .client-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Extras grid */
+  .extras-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .extra-item {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .extra-price {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .extra-name {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* CTA slide */
+  .cta-steps {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 36px;
+  }
+  .cta-step {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 28px 24px;
+    flex: 1;
+    max-width: 220px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-weight: 800;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .step-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .step-sub {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* Glow backgrounds */
+  .glow-tl {
+    position: absolute;
+    top: -200px; left: -200px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0.4;
+  }
+  .glow-br {
+    position: absolute;
+    bottom: -200px; right: -200px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(221, 0, 170, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    bottom: 0;
+    left: var(--sidebar-w);
+    right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.05);
+    z-index: 100;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #ff44cc);
+    transition: width 0.4s ease;
+  }
+
+  /* Nav arrows hint */
+  .nav-hint {
+    position: fixed;
+    bottom: 20px;
+    right: 32px;
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  }
+  .nav-arrow {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .nav-arrow:hover {
+    background: rgba(221, 0, 170, 0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* 2-col layout */
+  .two-col {
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    text-align: left;
+  }
+  .two-col .col { flex: 1; }
+
+  /* Mic list for MC slide */
+  .mc-list {
+    margin-top: 24px;
+    text-align: left;
+    max-width: 500px;
+  }
+  .mc-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 16px;
+  }
+  .mc-item:last-child { border-bottom: none; }
+  .mc-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  /* Slide-specific tweaks */
+  .slide .headline em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  /* Song count visual */
+  .song-visual {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .song-visual .big {
+    font-size: 120px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), #ff44cc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .song-visual .unit {
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--text-dim);
+  }
+</style>
+</head>
+<body>
+
+<!-- Slide Counter -->
+<div class="slide-counter" id="slideCounter">1/16</div>
+
+<!-- Progress Bar -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- Navigation Arrows -->
+<div class="nav-hint">
+  <div class="nav-arrow" onclick="changeSlide(-1)">←</div>
+  <div class="nav-arrow" onclick="changeSlide(1)">→</div>
+</div>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <img src="pinkwhiteBIGFUNfeb2007FINALLOGO.jpeg" alt="BIG FUN">
+  </div>
+  <div class="nav-item active" data-chapter="0" onclick="goToChapter(0)">
+    <span class="nav-number">01</span> More Than a DJ
+  </div>
+  <div class="nav-item" data-chapter="1" onclick="goToChapter(1)">
+    <span class="nav-number">02</span> MC Services
+  </div>
+  <div class="nav-item" data-chapter="2" onclick="goToChapter(2)">
+    <span class="nav-number">03</span> Your Music
+  </div>
+  <div class="nav-item" data-chapter="3" onclick="goToChapter(3)">
+    <span class="nav-number">04</span> Full Event Coverage
+  </div>
+  <div class="nav-item" data-chapter="4" onclick="goToChapter(4)">
+    <span class="nav-number">05</span> Pricing
+  </div>
+  <div class="nav-item" data-chapter="5" onclick="goToChapter(5)">
+    <span class="nav-number">06</span> Zero-Risk Terms
+  </div>
+  <div class="nav-item" data-chapter="6" onclick="goToChapter(6)">
+    <span class="nav-number">07</span> Track Record
+  </div>
+  <div class="nav-item" data-chapter="7" onclick="goToChapter(7)">
+    <span class="nav-number">08</span> Let's Do This
+  </div>
+</nav>
+
+<!-- Slides -->
+<div class="slides-container">
+
+  <!-- ═══════════ CHAPTER 1: More Than a DJ ═══════════ -->
+
+  <!-- Slide 1 -->
+  <div class="slide active" data-slide="0" data-chapter="0">
+    <div class="glow-tl"></div>
+    <div class="slide-inner">
+      <div class="label">What you're really getting</div>
+      <div class="headline">More Than <span class="accent">a DJ</span></div>
+      <div class="subhead">Someone who owns everything audio-related on your wedding day</div>
+      <div class="cards" style="margin-top: 48px;">
+        <div class="card">
+          <div class="card-icon">🎤</div>
+          <div class="card-title">Ceremony Sound</div>
+          <div class="card-text">Lapel mics, music cues, processional timing</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⏱️</div>
+          <div class="card-title">Real-Time Flow</div>
+          <div class="card-text">Pacing, transitions, preventing dead time — we own the momentum</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎶</div>
+          <div class="card-title">Packed Dance Floor</div>
+          <div class="card-text">Energy management from first dance to last song</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide" data-slide="1" data-chapter="0">
+    <div class="glow-br"></div>
+    <div class="slide-inner">
+      <div class="label">The best compliment we get</div>
+      <div class="quote">I forgot the DJ was even there — everything just worked.</div>
+      <div style="margin-top: 40px; font-size: 15px; color: var(--text-dim);">Seamless · Upbeat · Fun — never cheesy, never over-the-top</div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CHAPTER 2: MC Services ═══════════ -->
+
+  <!-- Slide 3 -->
+  <div class="slide" data-slide="2" data-chapter="1">
+    <div class="glow-tl"></div>
+    <div class="slide-inner">
+      <div class="label">MC Services</div>
+      <div class="headline">Your Event's <span class="accent">Quarterback</span></div>
+      <div class="subhead">Professional and subtle — we own the real-time flow so you enjoy the moment</div>
+      <div class="vs-layout">
+        <div class="vs-side bad">
+          <div class="vs-icon">🚫</div>
+          <div class="vs-title" style="color: #ff5555;">Not This</div>
+          <div class="vs-items">
+            Cheesy announcer<br>
+            Chicken dance<br>
+            Constant interruptions<br>
+            Center of attention
+          </div>
+        </div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side good">
+          <div class="vs-icon">✨</div>
+          <div class="vs-title" style="color: var(--accent);">BIG FUN</div>
+          <div class="vs-items">
+            Professional guide<br>
+            Seamless pacing<br>
+            Real-time momentum<br>
+            Works with your planner
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4 -->
+  <div class="slide" data-slide="3" data-chapter="1">
+    <div class="slide-inner">
+      <div class="label">What couples say</div>
+      <div class="headline" style="font-size: 42px;">Professional, <em>Never Cheesy</em></div>
+      <div class="cards" style="margin-top: 40px; grid-template-columns: 1fr 1fr;">
+        <div class="card" style="text-align: left;">
+          <div style="font-size: 32px; margin-bottom: 12px;">💬</div>
+          <div style="font-size: 17px; line-height: 1.6; font-weight: 300;">
+            "Guided everything perfectly<br><strong style="color: var(--accent);">without taking over</strong>"
+          </div>
+        </div>
+        <div class="card" style="text-align: left;">
+          <div style="font-size: 32px; margin-bottom: 12px;">💬</div>
+          <div style="font-size: 17px; line-height: 1.6; font-weight: 300;">
+            "Handled all the logistics so we could<br><strong style="color: var(--accent);">just enjoy ourselves</strong>"
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CHAPTER 3: Your Music ═══════════ -->
+
+  <!-- Slide 5 -->
+  <div class="slide" data-slide="4" data-chapter="2">
+    <div class="glow-br"></div>
+    <div class="slide-inner">
+      <div class="label">Your music, your way</div>
+      <div class="song-visual">
+        <span class="big">60K</span>
+        <span class="unit">songs</span>
+      </div>
+      <div class="headline" style="font-size: 40px;">Your Wedding. <span class="accent">Your Music.</span></div>
+      <div class="subhead">Your taste guides everything. We'll get any song we don't have — at our expense.</div>
+    </div>
+  </div>
+
+  <!-- Slide 6 -->
+  <div class="slide" data-slide="5" data-chapter="2">
+    <div class="slide-inner">
+      <div class="label">Guest Requests</div>
+      <div class="headline" style="font-size: 44px;">We <span class="accent">Protect</span> Your Vision</div>
+      <div class="subhead" style="margin-bottom: 40px;">You decide the approach — we execute it</div>
+      <div style="display: flex; gap: 24px; justify-content: center;">
+        <div class="card" style="flex: 1; max-width: 280px;">
+          <div style="font-size: 36px; margin-bottom: 12px;">🔒</div>
+          <div class="card-title">Strict Playlist</div>
+          <div class="card-text">We politely redirect guests and stick to your plan</div>
+        </div>
+        <div class="card" style="flex: 1; max-width: 280px;">
+          <div style="font-size: 36px; margin-bottom: 12px;">🎵</div>
+          <div class="card-title">Flexible Style</div>
+          <div class="card-text">We incorporate suggestions that fit your taste</div>
+        </div>
+        <div class="card" style="flex: 1; max-width: 280px;">
+          <div style="font-size: 36px; margin-bottom: 12px;">⚡</div>
+          <div class="card-title">Energy Protected</div>
+          <div class="card-text">Great Aunt Margaret's slow ballad won't kill the vibe</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CHAPTER 4: Full Event Coverage ═══════════ -->
+
+  <!-- Slide 7 -->
+  <div class="slide" data-slide="6" data-chapter="3">
+    <div class="glow-tl"></div>
+    <div class="slide-inner">
+      <div class="label">Full event coverage</div>
+      <div class="headline" style="font-size: 42px;">Every Moment, <span class="accent">Covered</span></div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">💍</div>
+          <div class="timeline-label">Ceremony</div>
+          <div class="timeline-sub">Lapel mics · Music cues<br>Processional timing</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🥂</div>
+          <div class="timeline-label">Cocktails</div>
+          <div class="timeline-sub">Background music<br>Dinner announcement</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🍽️</div>
+          <div class="timeline-label">Dinner</div>
+          <div class="timeline-sub">Toast management<br>Caterer coordination</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🪩</div>
+          <div class="timeline-label">Dancing</div>
+          <div class="timeline-sub">Nightclub sound<br>Dance lighting included</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 8 -->
+  <div class="slide" data-slide="7" data-chapter="3">
+    <div class="glow-br"></div>
+    <div class="slide-inner">
+      <div class="label">Dance Floor Experience</div>
+      <div class="headline" style="font-size: 44px;"><span class="accent">Dance Lighting</span> Included</div>
+      <div class="subhead">Nightclub-class sound + extensive lighting system at no extra charge</div>
+      <div style="margin-top: 40px; position: relative;">
+        <img src="dancefloor.jpg" alt="BIG FUN dance lighting at a real wedding" style="width: 100%; max-width: 640px; border-radius: 16px; border: 1px solid rgba(221,0,170,0.2); box-shadow: 0 8px 40px rgba(0,0,0,0.5);">
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CHAPTER 5: Pricing ═══════════ -->
+
+  <!-- Slide 9 -->
+  <div class="slide" data-slide="8" data-chapter="4">
+    <div class="glow-tl"></div>
+    <div class="slide-inner">
+      <div class="label">Simple, transparent pricing</div>
+      <div class="headline" style="font-size: 40px;">Everything You Need, <span class="accent">One Price</span></div>
+      <div class="price-cards">
+        <div class="price-card">
+          <div style="font-size: 14px; font-weight: 600; color: var(--text-dim);">RECEPTION ONLY</div>
+          <div class="price-amount">$1,599</div>
+          <div class="price-label-sm" style="line-height: 1.5;">Up to 4 hours · Single room<br><span style="background: rgba(255,255,255,0.06); padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.5px;">NON-PEAK DAYS</span></div>
+          <div class="price-features">
+            <div class="pf-line"><span class="pf-check">✓</span> Dinner & dancing sound</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Wireless mic for speeches</div>
+            <div class="pf-line"><span class="pf-check">✓</span> MC service throughout</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Dance lighting included</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Planning meeting</div>
+          </div>
+        </div>
+        <div class="price-card">
+          <div style="font-size: 14px; font-weight: 600; color: var(--text-dim);">FULL WEDDING</div>
+          <div class="price-amount">$1,799</div>
+          <div class="price-label-sm" style="line-height: 1.5;">Up to 4 hours · Multiple rooms<br><span style="background: rgba(255,255,255,0.06); padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.5px;">NON-PEAK DAYS</span></div>
+          <div class="price-features">
+            <div class="pf-line"><span class="pf-check">✓</span> Ceremony sound system</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Lapel mics for couple</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Cocktails music</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Dinner & dancing sound</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Dance lighting included</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Planning meeting</div>
+          </div>
+        </div>
+        <div class="price-card featured">
+          <div style="font-size: 14px; font-weight: 600; color: var(--accent);">FULL WEDDING</div>
+          <div class="price-amount">$2,299</div>
+          <div class="price-label-sm" style="line-height: 1.5;">Up to 6 hours · Multiple rooms<br><span style="background: rgba(221,0,170,0.1); padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.5px; color: var(--accent);">PEAK DAYS</span></div>
+          <div class="price-features">
+            <div class="pf-line"><span class="pf-check">✓</span> Ceremony + cocktails + dinner + dancing</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Lapel mics for couple</div>
+            <div class="pf-line"><span class="pf-check">✓</span> All rooms & spaces</div>
+            <div class="pf-line"><span class="pf-check">✓</span> 6 hours of coverage</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Dance lighting included</div>
+            <div class="pf-line"><span class="pf-check">✓</span> Planning meeting</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 20px; font-size: 13px; color: var(--text-dim);">Non-peak = Sun–Fri year-round + Sat Nov–Mar &nbsp;·&nbsp; Peak = Sat Apr–Oct &nbsp;·&nbsp; +$125 per extra 30 min on all packages</div>
+    </div>
+  </div>
+
+  <!-- Slide 10 -->
+  <div class="slide" data-slide="9" data-chapter="4">
+    <div class="slide-inner">
+      <div class="label">Optional add-ons</div>
+      <div class="headline" style="font-size: 40px;">Customize <span class="accent">Your Package</span></div>
+      <div class="extras-grid">
+        <div class="extra-item">
+          <div class="extra-price">$125</div>
+          <div class="extra-name">Extra 30 min</div>
+        </div>
+        <div class="extra-item">
+          <div class="extra-price">$300+</div>
+          <div class="extra-name">Video display</div>
+        </div>
+        <div class="extra-item">
+          <div class="extra-price">$500+</div>
+          <div class="extra-name">12 uplights</div>
+        </div>
+        <div class="extra-item">
+          <div class="extra-price">$200</div>
+          <div class="extra-name">Subwoofer</div>
+        </div>
+        <div class="extra-item">
+          <div class="extra-price">$200</div>
+          <div class="extra-name">Double sound</div>
+        </div>
+        <div class="extra-item">
+          <div class="extra-price">$50</div>
+          <div class="extra-name">Extra mic</div>
+        </div>
+      </div>
+      <div style="margin-top: 24px; font-size: 14px; color: var(--text-dim);">Add-ons can be added anytime during planning</div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CHAPTER 6: Zero-Risk Terms ═══════════ -->
+
+  <!-- Slide 11 -->
+  <div class="slide" data-slide="10" data-chapter="5">
+    <div class="glow-tl"></div>
+    <div class="glow-br"></div>
+    <div class="slide-inner">
+      <div class="label">Stress-free planning</div>
+      <div class="headline" style="font-size: 48px;"><span class="accent">Zero</span> Risk</div>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-check">✓</div>
+          <div><strong>No deposit</strong> — ever</div>
+        </div>
+        <div class="feature">
+          <div class="feature-check">✓</div>
+          <div><strong>Pay 30 days after</strong> your event</div>
+        </div>
+        <div class="feature">
+          <div class="feature-check">✓</div>
+          <div><strong>Cancel up to 1 day before</strong> — no fee</div>
+        </div>
+        <div class="feature">
+          <div class="feature-check">✓</div>
+          <div><strong>No taxes or hidden fees</strong></div>
+        </div>
+        <div class="feature">
+          <div class="feature-check">✓</div>
+          <div><strong>Adjust anytime</strong> — times, services, extras</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CHAPTER 7: Track Record ═══════════ -->
+
+  <!-- Slide 12 -->
+  <div class="slide" data-slide="11" data-chapter="6">
+    <div class="glow-br"></div>
+    <div class="slide-inner">
+      <div class="label">Proven track record</div>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-value">304</div>
+          <div class="stat-label">Yelp Reviews</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">297</div>
+          <div class="stat-label">Five-Star ⭐</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">98%</div>
+          <div class="stat-label">Five-Star Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 13 -->
+  <div class="slide" data-slide="12" data-chapter="6">
+    <div class="slide-inner">
+      <div class="label">Award-winning</div>
+      <div class="headline" style="font-size: 42px;">Year After <span class="accent">Year</span></div>
+      <div class="awards">
+        <div class="award">
+          <div class="award-badge">
+            <div class="award-number">14</div>
+            <div class="award-of">of 15 yrs</div>
+          </div>
+          <div class="award-name">Best of The Knot</div>
+          <div class="award-sub">Winner</div>
+        </div>
+        <div class="award">
+          <div class="award-badge">
+            <div class="award-number">15</div>
+            <div class="award-of">of 16 yrs</div>
+          </div>
+          <div class="award-name">WeddingWire</div>
+          <div class="award-sub">Couple's Choice Award</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 14 -->
+  <div class="slide" data-slide="13" data-chapter="6">
+    <div class="slide-inner">
+      <div class="label">Trusted by</div>
+      <div class="headline" style="font-size: 40px;">Notable <span class="accent">Clients</span></div>
+      <div class="client-row" style="margin-top: 50px;">
+        <div class="client-name">Apple</div>
+        <div class="client-name">Disney</div>
+        <div class="client-name">Google</div>
+        <div class="client-name">Microsoft</div>
+      </div>
+      <div style="margin-top: 40px; font-size: 16px; color: var(--text-dim);">Plus private events for Stephen Curry, George Lucas, and more</div>
+    </div>
+  </div>
+
+  <!-- Slide 15: Testimonial -->
+  <div class="slide" data-slide="14" data-chapter="6">
+    <div class="glow-tl"></div>
+    <div class="slide-inner">
+      <div class="label">Real story</div>
+      <div class="quote" style="font-size: 26px;">
+        Our wedding had two sound systems and elaborate space changes, but due to a vicious downpour, Paul made the necessary adjustments without even adding to my stress.
+      </div>
+      <div style="margin-top: 32px; font-size: 15px; color: var(--text-dim);">The difference between "playing music" and <strong style="color: var(--accent);">running your event</strong></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CHAPTER 8: Let's Do This ═══════════ -->
+
+  <!-- Slide 16 -->
+  <div class="slide" data-slide="15" data-chapter="7">
+    <div class="glow-tl"></div>
+    <div class="glow-br"></div>
+    <div class="slide-inner">
+      <div class="label">Ready?</div>
+      <div class="headline" style="font-size: 50px;">Let's Make It <span class="accent">Happen</span></div>
+      <div class="cta-steps">
+        <div class="cta-step">
+          <div class="step-number">1</div>
+          <div class="step-title">Reply to Confirm</div>
+          <div class="step-sub">Send your details and you're booked — nothing to sign</div>
+        </div>
+        <div class="cta-step">
+          <div class="step-number">2</div>
+          <div class="step-title">Planning Meeting</div>
+          <div class="step-sub">4–6 weeks before your event, we'll plan every detail</div>
+        </div>
+        <div class="cta-step">
+          <div class="step-number">3</div>
+          <div class="step-title">Enjoy Your Day</div>
+          <div class="step-sub">We handle the rest — pay 30 days after</div>
+        </div>
+      </div>
+      <div style="margin-top: 48px;">
+        <div style="font-size: 18px; font-weight: 600; color: var(--accent);">1-800-924-4386</div>
+        <div style="font-size: 14px; color: var(--text-dim); margin-top: 4px;">bigfundj.com</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /slides-container -->
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const navItems = document.querySelectorAll('.nav-item');
+  const counter = document.getElementById('slideCounter');
+  const progressFill = document.getElementById('progressFill');
+  let current = 0;
+  const total = slides.length;
+
+  // Chapter mapping: which slide starts each chapter
+  const chapterStarts = [0, 2, 4, 6, 8, 10, 11, 15];
+
+  function updateSlide() {
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === current);
+    });
+
+    // Update counter
+    counter.textContent = `${current + 1}/${total}`;
+
+    // Update progress
+    progressFill.style.width = `${((current + 1) / total) * 100}%`;
+
+    // Update nav highlight
+    const currentChapter = parseInt(slides[current].dataset.chapter);
+    navItems.forEach(n => {
+      n.classList.toggle('active', parseInt(n.dataset.chapter) === currentChapter);
+    });
+  }
+
+  function changeSlide(dir) {
+    const next = current + dir;
+    if (next >= 0 && next < total) {
+      current = next;
+      updateSlide();
+    }
+  }
+
+  function goToChapter(chapterIndex) {
+    current = chapterStarts[chapterIndex];
+    updateSlide();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      changeSlide(1);
+    }
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      changeSlide(-1);
+    }
+    if (e.key === 'Home') {
+      current = 0;
+      updateSlide();
+    }
+    if (e.key === 'End') {
+      current = total - 1;
+      updateSlide();
+    }
+  });
+
+  // Initialize
+  updateSlide();
+</script>
+
+</body>
+</html>
